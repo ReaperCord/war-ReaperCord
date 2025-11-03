@@ -16,7 +16,9 @@
 
 // Inclusão das bibliotecas padrão necessárias para entrada/saída, alocação de memória, manipulação de strings e tempo.
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
@@ -143,4 +145,64 @@ int main() {
     }
 
     return 0;
+}
+
+// Função para alocar memória para o mapa
+Territorio* alocarMapa(int tamanho) {
+    return (Territorio*)calloc(tamanho, sizeof(Territorio));
+}
+
+// Função para cadastrar os territórios
+void cadastrarTerritorios(Territorio* mapa, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        printf("\n--- Território %d ---\n", i + 1);
+
+        printf("Nome do território: ");
+        fgets(mapa[i].nome, sizeof(mapa[i].nome), stdin);
+        mapa[i].nome[strcspn(mapa[i].nome, "\n")] = '\0'; // Remove o '\n' do final
+
+        printf("Cor do exército: ");
+        fgets(mapa[i].cor, sizeof(mapa[i].cor), stdin);
+        mapa[i].cor[strcspn(mapa[i].cor, "\n")] = '\0'; // Remove o '\n' do final
+
+        printf("Número de tropas: ");
+        scanf("%d", &mapa[i].tropas);
+        getchar(); // Limpa o buffer de entrada
+    }
+}
+
+// Função para exibir o mapa
+void exibirMapa(const Territorio* mapa, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        printf("\n--- Território %d ---\n", i + 1);
+        printf("Nome: %s\n", mapa[i].nome);
+        printf("Cor do exército: %s\n", mapa[i].cor);
+        printf("Número de tropas: %d\n", mapa[i].tropas);
+    }
+}
+
+// Função para simular um ataque
+void atacar(Territorio* atacante, Territorio* defensor) {
+    printf("\nSimulando ataque entre %s (atacante) e %s (defensor)...\n",
+           atacante->nome, defensor->nome);
+
+    int dadoAtacante = rand() % 6 + 1; // Rolagem de dado (1 a 6)
+    int dadoDefensor = rand() % 6 + 1; // Rolagem de dado (1 a 6)
+
+    printf("Dado do atacante: %d\n", dadoAtacante);
+    printf("Dado do defensor: %d\n", dadoDefensor);
+
+    if (dadoAtacante > dadoDefensor) {
+        printf("%s venceu o ataque!\n", atacante->nome);
+        strcpy(defensor->cor, atacante->cor); // Transferência de cor
+        defensor->tropas = atacante->tropas / 2; // Transferência de tropas
+    } else {
+        printf("%s defendeu com sucesso!\n", defensor->nome);
+        atacante->tropas--; // Perda de uma tropa pelo atacante
+    }
+}
+
+// Função para liberar memória alocada
+void liberarMemoria(Territorio* mapa) {
+    free(mapa);
 }
