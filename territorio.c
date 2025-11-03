@@ -5,7 +5,19 @@
 #include "territorio.h"
 #include <string.h>
 
-void MapBoard(Territory mapa[]) {
+static Territory territory[MAX_TERRITORIES];
+static int totalTerritory = 0;
+
+void initTerritories(Territory mapa[]) {
+    // zera todo o vetor para evitar lixo
+    for (int i = 0; i < MAX_TERRITORIES; i++) {
+        mapa[i].name[0] = '\0';
+        mapa[i].continent[0] = '\0';
+        mapa[i].armyColor[0] = '\0';
+        mapa[i].troops = 0;
+        mapa[i].dono[0] = '\0';
+    }
+
     // América do Sul
     strcpy(mapa[0].name, "Brasil");
     strcpy(mapa[0].continent, "América do Sul");
@@ -83,11 +95,20 @@ void MapBoard(Territory mapa[]) {
     strcpy(mapa[17].continent, "Ásia");
     mapa[17].troops = 0;
 
+    // completando até MAX_TERRITORIES com nomes válidos (exemplo)
     strcpy(mapa[18].name, "Japão");
     strcpy(mapa[18].continent, "Ásia");
     mapa[18].troops = 0;
 
     strcpy(mapa[19].name, "Rússia");
-    strcpy(mapa[19].continent, "Ásia");
+    strcpy(mapa[19].continent, "Ásia/Europa");
     mapa[19].troops = 0;
+}
+
+Territory* getTerritoryByName(const char *name) {
+    for (int i = 0; i < totalTerritory; i++) {
+        if (strcmp(territory[i].name, name) == 0)
+            return &territory[i];
+    }
+    return NULL;
 }

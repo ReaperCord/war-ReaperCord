@@ -19,5 +19,7 @@ typedef struct exercitos {
 } Player;
 
 void playerRegistry(Player jogadores[], int *numJogadores);
+void initPlayers(Player jogadores[]);
+void chooseInitialTerritories(Player jogadores[], int numJogadores, Territory mapa[], int totalTerritories);
 
 #endif

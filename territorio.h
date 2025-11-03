@@ -12,8 +12,11 @@ typedef struct territory {
     char continent[MAX_NAME];
     char armyColor[10];
     int troops;
+    char dono[MAX_NAME];
 } Territory;
 
-void MapBoard(Territory mapa[]);
+// carrega os nomes dos territórios, sem número fixo
+void initTerritories(Territory mapa[]);
+Territory* getTerritoryByName(const char *name);
 
 #endif
