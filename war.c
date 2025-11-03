@@ -15,12 +15,20 @@
 // ============================================================================
 
 // Inclusão das bibliotecas padrão necessárias para entrada/saída, alocação de memória, manipulação de strings e tempo.
+#include <stdio.h>
+#include <string.h>
 
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
+#define MAX_TERRITORIOS 5
 
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+typedef struct {
+    char nome[30];      // Nome do território
+    char cor[10];       // Cor do exército
+    int tropas;         // Número de tropas
+} Territorio;
 
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
@@ -96,3 +104,43 @@
 
 // limparBufferEntrada():
 // Função utilitária para limpar o buffer de entrada do teclado (stdin), evitando problemas com leituras consecutivas de scanf e getchar.
+
+// --- Código Adicionado ---
+
+int main() {
+    // Declaração de vetor de structs para armazenar os territórios
+    Territorio territorios[MAX_TERRITORIOS];
+
+    printf("==================== Cadastro de Territórios ====================\n");
+
+    // Entrada de dados para os territórios
+    for (int i = 0; i < MAX_TERRITORIOS; i++) {
+        printf("\n--- Território %d ---\n", i + 1);
+
+        // Entrada do nome do território
+        printf("Nome do território: ");
+        fgets(territorios[i].nome, sizeof(territorios[i].nome), stdin);
+        territorios[i].nome[strcspn(territorios[i].nome, "\n")] = '\0'; // Remove o '\n' do final
+
+        // Entrada da cor do exército
+        printf("Cor do exército: ");
+        fgets(territorios[i].cor, sizeof(territorios[i].cor), stdin);
+        territorios[i].cor[strcspn(territorios[i].cor, "\n")] = '\0'; // Remove o '\n' do final
+
+        // Entrada do número de tropas
+        printf("Número de tropas: ");
+        scanf("%d", &territorios[i].tropas);
+        getchar(); // Limpa o buffer de entrada
+    }
+
+    // Exibição dos dados cadastrados
+    printf("\n==================== Territórios Registrados ====================\n");
+    for (int i = 0; i < MAX_TERRITORIOS; i++) {
+        printf("\n--- Território %d ---\n", i + 1);
+        printf("Nome: %s\n", territorios[i].nome);
+        printf("Cor do exército: %s\n", territorios[i].cor);
+        printf("Número de tropas: %d\n", territorios[i].tropas);
+    }
+
+    return 0;
+}
